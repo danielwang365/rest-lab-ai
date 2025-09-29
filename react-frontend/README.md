@@ -1,113 +1,73 @@
-# Agent Starter for React
+# Simple AI Therapist Frontend with Tracking
 
-This is a starter template for [LiveKit Agents](https://docs.livekit.io/agents) that provides a simple voice interface using the [LiveKit JavaScript SDK](https://github.com/livekit/client-sdk-js). It supports [voice](https://docs.livekit.io/agents/start/voice-ai), [transcriptions](https://docs.livekit.io/agents/build/text/), and [virtual avatars](https://docs.livekit.io/agents/integrations/avatar).
+A clean React/Next.js interface for voice conversations with your AI therapist, featuring real-time tracking visualizations.
 
-Also available for:
-[Android](https://github.com/livekit-examples/agent-starter-android) • [Flutter](https://github.com/livekit-examples/agent-starter-flutter) • [Swift](https://github.com/livekit-examples/agent-starter-swift) • [React Native](https://github.com/livekit-examples/agent-starter-react-native)
+## What's Different from the Original Template
 
-<picture>
-  <source srcset="./.github/assets/readme-hero-dark.webp" media="(prefers-color-scheme: dark)">
-  <source srcset="./.github/assets/readme-hero-light.webp" media="(prefers-color-scheme: light)">
-  <img src="./.github/assets/readme-hero-light.webp" alt="App screenshot">
-</picture>
+This is based on the official LiveKit React template with these enhancements:
 
-### Features:
+### ✅ **Added Components:**
+- **`AnalyticsDashboard`** - Main dashboard showing real-time health metrics
+- **Tracking Types** - TypeScript definitions for pain/sleep/mood data
+- **Real-time Data Listening** - Receives updates from your Python agent
 
-- Real-time voice interaction with LiveKit Agents
-- Camera video streaming support
-- Screen sharing capabilities
-- Audio visualization and level monitoring
-- Virtual avatar integration
-- Light/dark theme switching with system preference detection
-- Customizable branding, colors, and UI text via configuration
+### 📊 **Tracking Features:**
 
-This template is built with Next.js and is free for you to use or modify as you see fit.
+**Pain Assessment:**
+- Pain level (1-10)
+- Location and quality
+- Triggers and coping strategies
 
-### Project structure
+**Sleep Quality:**
+- Sleep rating (1-10)
+- Hours slept, wake-ups
+- Affecting factors
+
+**Mood Assessment:**
+- Mood and energy levels (1-10)
+- Daily activity completion
+- Social engagement and coping strategies
+
+## How It Works
+
+1. **Voice Conversation**: Use the standard LiveKit voice interface
+2. **Agent Processing**: Your Python agent processes the conversation
+3. **Function Calls**: When you mention pain/sleep/mood, the agent calls tracking functions
+4. **Real-time Updates**: The tracking panel instantly shows new data
+5. **Local Storage**: All data is saved in your browser
+
+## Interface Layout
 
 ```
-agent-starter-react/
-├── app/
-│   ├── (app)/
-│   ├── api/
-│   ├── components/
-│   ├── fonts/
-│   ├── globals.css
-│   └── layout.tsx
-├── components/
-│   ├── ui/
-│   ├── analytics-dashboard.tsx
-│   ├── voice-bar.tsx
-│   ├── metric-cards.tsx
-│   ├── trend-charts.tsx
-│   ├── live-updates-feed.tsx
-│   └── app.tsx
-├── hooks/
-├── lib/
-├── public/
-└── package.json
+┌─────────────────────────────────────┐
+│         LiveKit Voice Chat          │
+│        (Original Template)          │
+│                                     │
+│                                     │
+│                                     │
+└─────────────────────────────────────┘
+                                    ┌─┐
+                              ┌─────┤📊├─────┐
+                              │ Pain: 6/10   │
+                              │ Sleep: 7/10  │  <- Tracking Panel
+                              │ Mood: 5/10   │     (Floating)
+                              │ [mini chart] │
+                              └──────────────┘
 ```
 
-## Getting started
+## Development
 
-> [!TIP]
-> If you'd like to try this application without modification, you can deploy an instance in just a few clicks with [LiveKit Cloud Sandbox](https://cloud.livekit.io/projects/p_/sandbox/templates/agent-starter-react).
+The tracking panel appears when:
+- A therapy session is active
+- Shows current values and mini trends
+- Updates in real-time when agent calls tracking functions
+- Persists data between sessions
 
-[![Open on LiveKit](https://img.shields.io/badge/Open%20on%20LiveKit%20Cloud-002CF2?style=for-the-badge&logo=external-link)](https://cloud.livekit.io/projects/p_/sandbox/templates/agent-starter-react)
+## Files Modified/Added
 
-Run the following command to automatically clone this template.
+- `components/analytics-dashboard.tsx` - Main tracking visualization
+- `lib/tracking-types.ts` - TypeScript definitions  
+- `components/app.tsx` - Added tracking panel integration
+- `next.config.ts` - Relaxed linting for development
 
-```bash
-lk app create --template agent-starter-react
-```
-
-Then run the app with:
-
-```bash
-pnpm install
-pnpm dev
-```
-
-And open http://localhost:3000 in your browser.
-
-You'll also need an agent to speak with. Try our starter agent for [Python](https://github.com/livekit-examples/agent-starter-python), [Node.js](https://github.com/livekit-examples/agent-starter-node), or [create your own from scratch](https://docs.livekit.io/agents/start/voice-ai/).
-
-## Configuration
-
-This starter is designed to be flexible so you can adapt it to your specific agent use case. You can easily configure it to work with different types of inputs and outputs:
-
-#### Example: App configuration (`app-config.ts`)
-
-```ts
-export const APP_CONFIG_DEFAULTS = {
-  companyName: 'LiveKit',
-  pageTitle: 'LiveKit Voice Agent',
-  pageDescription: 'A voice agent built with LiveKit',
-  supportsChatInput: true,
-  supportsVideoInput: true,
-  supportsScreenShare: true,
-  logo: '/lk-logo.svg',
-  accent: '#002cf2',
-  logoDark: '/lk-logo-dark.svg',
-  accentDark: '#1fd5f9',
-  startButtonText: 'Start call',
-};
-```
-
-You can update these values in [`app-config.ts`](./app-config.ts) to customize branding, features, and UI text for your deployment.
-
-#### Environment Variables
-
-You'll also need to configure your LiveKit credentials in `.env.local` (copy `.env.example` if you don't have one):
-
-```env
-LIVEKIT_API_KEY=your_livekit_api_key
-LIVEKIT_API_SECRET=your_livekit_api_secret
-LIVEKIT_URL=https://your-livekit-server-url
-```
-
-These are required for the voice agent functionality to work with your LiveKit project.
-
-## Contributing
-
-This template is open source and we welcome contributions! Please open a PR or issue through GitHub, and don't forget to join us in the [LiveKit Community Slack](https://livekit.io/join-slack)!
+Original LiveKit template functionality remains unchanged!
